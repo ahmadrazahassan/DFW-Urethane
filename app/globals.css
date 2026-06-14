@@ -1,0 +1,218 @@
+@import "tailwindcss";
+
+@theme {
+  /* Warm neutral-luxury palette */
+  --color-cream: #faf8f4;
+  --color-white: #ffffff;
+  --color-charcoal: #232020;
+  --color-charcoal-2: #2c2826;
+  --color-ink: #1a1715;
+  --color-muted: #6c6862;
+  --color-muted-dark: #b5b0a8;
+  --color-line-light: #e6e2db;
+  --color-line-dark: rgba(255, 255, 255, 0.12);
+  --color-clay: #c28e63;
+
+  /* Radii */
+  --radius-card: 1.25rem; /* 20px */
+  --radius-media: 1.5rem; /* 24px */
+
+  /* Font — Inter Tight is wired via next/font as --font-inter-tight */
+  --font-sans:
+    var(--font-inter-tight), ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  /* Manrope — used only for the wordmark via the `font-brand` utility */
+  --font-brand: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+
+  /* Marquee animations */
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-marquee-reverse: marquee-reverse 40s linear infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marquee-reverse {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Offset anchor jumps so the fixed floating header doesn't cover content. */
+    scroll-padding-top: 6rem;
+  }
+
+  body {
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Accessible focus ring across interactive elements */
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+/* Respect reduced-motion globally for CSS marquees */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Utility: pause marquee on hover (applied on the track's parent) */
+.marquee-pause:hover [data-marquee] {
+  animation-play-state: paused;
+}
+
+/* ---- Animated border beam (stat cards) ---- */
+@property --beam-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes beam-rotate {
+  to {
+    --beam-angle: 360deg;
+  }
+}
+
+/* A clay light streak that travels around the rounded border. Uses a
+   conic-gradient masked to a 1.5px ring so only the border perimeter shows. */
+.border-beam {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: conic-gradient(
+    from var(--beam-angle),
+    transparent 0deg,
+    transparent 280deg,
+    rgba(194, 142, 99, 0.15) 320deg,
+    var(--color-clay) 345deg,
+    #ffffff 352deg,
+    var(--color-clay) 358deg,
+    transparent 360deg
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: beam-rotate 4s linear infinite;
+  pointer-events: none;
+}
+
+/* Hover-gated beam: invisible until the parent .group is hovered. */
+.border-beam-hover {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.group:hover .border-beam-hover {
+  opacity: 1;
+}
+
+/* Silver beam variant — for the glass hero card + stat pills. */
+.border-beam-silver {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: conic-gradient(
+    from var(--beam-angle),
+    transparent 0deg,
+    transparent 270deg,
+    rgba(255, 255, 255, 0.15) 315deg,
+    rgba(214, 216, 220, 0.9) 342deg,
+    #ffffff 351deg,
+    rgba(214, 216, 220, 0.9) 360deg
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: beam-rotate 4s linear infinite;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .border-beam,
+  .border-beam-hover,
+  .border-beam-silver {
+    animation: none;
+    background: none;
+  }
+}
+
+/* ---- iOS "liquid glass" surfaces ---- */
+/* Light glass: gradient fill (bright top → faint bottom), a 1px specular
+   top-edge highlight, heavy blur + saturate, and a soft drop shadow. */
+.liquid-glass {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.24) 0%,
+    rgba(255, 255, 255, 0.07) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.5),
+    inset 0 -1px 1px 0 rgba(255, 255, 255, 0.06),
+    0 8px 32px -8px rgba(0, 0, 0, 0.45);
+}
+
+/* Nav glass: much more transparent than the cards — relies on blur, not a
+   white fill — so it reads as true glassmorphism over the hero photo. */
+.liquid-glass-nav {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.03) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.35),
+    0 10px 30px -12px rgba(0, 0, 0, 0.35);
+}
+
+/* Dark glass: same treatment over a warm-charcoal tint for legible white text. */
+.liquid-glass-dark {
+  background: linear-gradient(
+    180deg,
+    rgba(54, 50, 47, 0.62) 0%,
+    rgba(26, 23, 21, 0.46) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(22px) saturate(160%);
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.22),
+    0 10px 40px -12px rgba(0, 0, 0, 0.55);
+}
