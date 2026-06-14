@@ -2,15 +2,17 @@ import Image from "next/image";
 import { projects } from "@/lib/content";
 import { Section } from "@/components/ui/section";
 import { Reveal } from "@/components/ui/reveal";
+import { TextReveal } from "@/components/ui/text-reveal";
 
 export function Projects() {
   return (
     <Section id="projects" tone="white">
-      <Reveal>
-        <h2 className="max-w-2xl text-3xl font-semibold leading-[1.05] tracking-[-0.02em] sm:text-4xl lg:text-5xl">
-          {projects.heading}
-        </h2>
-      </Reveal>
+      <TextReveal
+        as="h2"
+        className="max-w-2xl text-3xl font-semibold leading-[1.05] tracking-[-0.02em] sm:text-4xl lg:text-5xl"
+      >
+        {projects.heading}
+      </TextReveal>
 
       <div className="mt-12 grid gap-6 md:grid-cols-3">
         {projects.items.map((item, i) => (

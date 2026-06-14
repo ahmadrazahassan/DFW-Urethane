@@ -30,7 +30,8 @@ export function CountUp({
     const start = performance.now();
     const tick = (now: number) => {
       const t = Math.min((now - start) / (duration * 1000), 1);
-      const eased = 1 - Math.pow(1 - t, 3);
+      // easeOutExpo — a longer, softer landing than cubic for a premium feel.
+      const eased = t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
       setVal(to * eased);
       if (t < 1) raf = requestAnimationFrame(tick);
       else setVal(to);

@@ -47,18 +47,22 @@ export function Hero() {
               </div>
 
               {/* Bottom row: two thumbnails + Our Projects pill */}
-              <div className="mt-6 flex items-center gap-4">
+              <div className="mt-6 flex items-center gap-3 sm:gap-4">
                 <div className="flex gap-2">
-                  {[thumbA, thumbB].map((t) => (
+                  {[thumbA, thumbB].map((t, i) => (
                     <span
                       key={t.src}
-                      className="relative h-14 w-20 overflow-hidden rounded-lg border border-white/10"
+                      className={`relative h-12 w-16 shrink-0 overflow-hidden rounded-lg border border-white/10 sm:h-14 sm:w-20 ${
+                        // Second thumbnail is hidden on phones so the row stays
+                        // roomy; both show from the sm breakpoint up (laptop).
+                        i === 1 ? "hidden sm:block" : ""
+                      }`}
                     >
                       <Image
                         src={t.src}
                         alt={t.alt}
                         fill
-                        sizes="80px"
+                        sizes="(max-width: 640px) 64px, 80px"
                         className="object-cover"
                       />
                     </span>
@@ -67,7 +71,7 @@ export function Hero() {
 
                 <a
                   href={hero.projectsCta.href}
-                  className="group ml-auto inline-flex items-center gap-2.5 rounded-full border border-white/15 bg-white/10 py-1.5 pl-5 pr-1.5 text-sm font-medium text-white transition-all duration-200 hover:scale-[1.02] hover:border-clay hover:bg-clay hover:text-ink"
+                  className="group ml-auto inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full border border-white/15 bg-white/10 py-1.5 pl-4 pr-1.5 text-sm font-medium text-white transition-all duration-200 hover:scale-[1.02] hover:border-clay hover:bg-clay hover:text-ink sm:gap-2.5 sm:pl-5"
                 >
                   {hero.projectsCta.label}
                   <span className="grid size-8 place-items-center rounded-full bg-white text-ink transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:bg-ink group-hover:text-white">

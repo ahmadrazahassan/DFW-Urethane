@@ -3,6 +3,7 @@ import { introStats } from "@/lib/content";
 import type { Img } from "@/lib/content";
 import { Section } from "@/components/ui/section";
 import { Reveal } from "@/components/ui/reveal";
+import { TextReveal } from "@/components/ui/text-reveal";
 import { ButtonPill } from "@/components/ui/button-pill";
 import { StatCard } from "@/components/ui/stat-card";
 
@@ -31,9 +32,12 @@ export function IntroStats() {
       <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
         {/* Left: headline (top) + paragraph & CTA (bottom) */}
         <Reveal className="flex flex-col justify-between">
-          <h2 className="text-3xl font-semibold leading-[1.1] tracking-[-0.02em] text-ink sm:text-4xl lg:text-[2.75rem]">
+          <TextReveal
+            as="h2"
+            className="text-3xl font-semibold leading-[1.1] tracking-[-0.02em] text-ink sm:text-4xl lg:text-[2.75rem]"
+          >
             {introStats.headline}
-          </h2>
+          </TextReveal>
           <div className="mt-10 lg:mt-0">
             <p className="max-w-md text-base leading-[1.6] text-muted">
               {introStats.body}

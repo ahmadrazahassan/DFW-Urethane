@@ -2,6 +2,7 @@ import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import { whyChoose } from "@/lib/content";
 import { Reveal } from "@/components/ui/reveal";
+import { TextReveal } from "@/components/ui/text-reveal";
 
 function ReasonCard({
   title,
@@ -39,11 +40,12 @@ export function WhyChoose() {
         <div className="mx-auto w-full max-w-[1232px]">
           {/* Header: heading left, description right */}
           <div className="mb-12 grid gap-8 lg:grid-cols-2">
-            <Reveal as="div">
-              <h2 className="max-w-xl text-3xl font-semibold leading-[1.1] tracking-[-0.02em] sm:text-4xl lg:text-[2.75rem]">
-                {whyChoose.heading}
-              </h2>
-            </Reveal>
+            <TextReveal
+              as="h2"
+              className="max-w-xl text-3xl font-semibold leading-[1.1] tracking-[-0.02em] sm:text-4xl lg:text-[2.75rem]"
+            >
+              {whyChoose.heading}
+            </TextReveal>
             <Reveal as="div" delay={0.1} className="lg:pt-2">
               <p className="max-w-md text-sm leading-[1.7] text-muted-dark lg:ml-auto">
                 {whyChoose.description}

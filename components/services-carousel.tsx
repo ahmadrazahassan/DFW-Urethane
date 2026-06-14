@@ -3,6 +3,7 @@ import { Dot } from "lucide-react";
 import { services } from "@/lib/content";
 import { ButtonPill } from "@/components/ui/button-pill";
 import { Reveal } from "@/components/ui/reveal";
+import { TextReveal } from "@/components/ui/text-reveal";
 
 export function ServicesCarousel() {
   return (
@@ -13,9 +14,13 @@ export function ServicesCarousel() {
           <span className="inline-flex items-center rounded-full border border-line-light bg-white px-4 py-1.5 text-xs font-medium text-muted">
             {services.label}
           </span>
-          <h2 className="mt-6 text-3xl font-semibold leading-[1.1] tracking-[-0.02em] text-ink sm:text-4xl lg:text-5xl">
+          <TextReveal
+            as="h2"
+            delay={0.05}
+            className="mt-6 text-3xl font-semibold leading-[1.1] tracking-[-0.02em] text-ink sm:text-4xl lg:text-5xl"
+          >
             {services.heading}
-          </h2>
+          </TextReveal>
         </Reveal>
 
         {/* Stacked sticky cards — each sticks and the next stacks over it */}
